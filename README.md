@@ -18,7 +18,7 @@ A game of [Concentration](https://en.wikipedia.org/wiki/Concentration_(card_game
 
 # Try It Out
 
-This project is deployed on Github pages: http://razziaja.github.io/concentrationonstream
+This project is deployed on Github pages: https://razziaja.github.io/concentrationonstream
 
 # Future Work
 
