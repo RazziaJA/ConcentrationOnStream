@@ -67,6 +67,10 @@ function Game(props) {
       setFirstSelection(cardIndex);
     } else if (secondSelection === undefined) {
       setSecondSelection(cardIndex);
+      var newTurnsTaken = [...props.turnsTaken];
+      newTurnsTaken[props.playerMoving]++;
+      props.setTurnsTaken(newTurnsTaken);
+      props.setPlayerMoving((props.playerMoving + 1) % 2);
 
       // if match
       if (isMatch(props.board[firstSelection], props.board[cardIndex], props.requireColorMatch, props.numRanks)) {
@@ -74,6 +78,10 @@ function Game(props) {
         newMatches[firstSelection] = true;
         newMatches[cardIndex] = true;
         setMatched(newMatches);
+
+        var newMatchesFound = [...props.matchesFound];
+        newMatchesFound[props.playerMoving]++;
+        props.setMatchesFound(newMatchesFound);
 
         // if game over
         if (newMatches.every(matched => matched)) {
@@ -95,6 +103,9 @@ function Game(props) {
   
   return (
     <div>
+      <label>Player {props.playerMoving + 1}'s turn</label><br/>
+      <label>Player 1 Turns taken: {props.turnsTaken[0]}, matches found: {props.matchesFound[0]}, success rate: {(1.0 * props.matchesFound[0]) / Math.max(props.turnsTaken[0], 1)}</label><br/>
+      <label>Player 2 Turns taken: {props.turnsTaken[1]}, matches found: {props.matchesFound[1]}, success rate: {(1.0 * props.matchesFound[1]) / Math.max(props.turnsTaken[1], 1)}</label>
       {props.rows.map((row, idx) =>
         <ul key={idx} className="cards">
           {row.map(cardIdx =>
@@ -122,6 +133,9 @@ function App() {
   const [showBoard, setShowBoard] = useState(false);
   const [numRanks, setNumRanks] = useState(13);
   const [numSuits, setNumSuits] = useState(4);
+  const [turnsTaken, setTurnsTaken] = useState(Array(2).fill(0));
+  const [matchesFound, setMatchesFound] = useState(Array(2).fill(0));
+  const [playerMoving, setPlayerMoving] = useState(0);
 
   var startNewGame = function() {
     setBoard(generateNewBoard(numRanks * numSuits));
@@ -129,6 +143,9 @@ function App() {
     setRows(groupBoardIndicesIntoRows(numRanks, numSuits * numRanks));
     setGameOver(false);
     setShowBoard(true);
+    setTurnsTaken(Array(2).fill(0));
+    setMatchesFound(Array(2).fill(0));
+    setPlayerMoving(0);
   }
 
   return (
@@ -168,7 +185,13 @@ function App() {
           numRanks={numRanks} 
           numSuits={numSuits}
           matched={matched}
-          setMatched={setMatched}/>
+          setMatched={setMatched}
+          turnsTaken={turnsTaken}
+          setTurnsTaken={setTurnsTaken}
+          matchesFound={matchesFound}
+          setMatchesFound={setMatchesFound}
+          playerMoving={playerMoving}
+          setPlayerMoving={setPlayerMoving} />
       </div>
     </div>
   );
