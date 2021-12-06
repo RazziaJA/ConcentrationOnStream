@@ -65,10 +65,8 @@ function Game(props) {
   var onCardClicked = function(cardIndex) {
     if (firstSelection === undefined) {
       setFirstSelection(cardIndex);
-      console.log('set first selection to %s', cardIndex);
     } else if (secondSelection === undefined) {
       setSecondSelection(cardIndex);
-      console.log('set second selection to %s', cardIndex);
 
       // if match
       if (isMatch(props.board[firstSelection], props.board[cardIndex], props.requireColorMatch, props.numRanks)) {
@@ -84,7 +82,7 @@ function Game(props) {
         clearSelections();
       } else {
         // if not match
-        setTimeout(clearSelections, 2000);
+        setTimeout(clearSelections, 1500);
       }
     }
   };
